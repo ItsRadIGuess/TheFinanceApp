@@ -147,13 +147,29 @@ class LiabilityDetail(ModelNameMixin, DetailView):
 
 class LiabilityCreate(ModelNameMixin, CreateView):
     model = Liability
-    fields = ['name', 'amount']
+    fields = [
+        'name',
+        'amount',
+        'payment_amount',
+        'payment_frequency',
+        'payments_remaining',
+        'interest_rate',
+        'notes',
+    ]
     template_name = 'finance/form.html'
     success_url = reverse_lazy('liability_list')
 
 class LiabilityUpdate(ModelNameMixin, UpdateView):
     model = Liability
-    fields = ['name', 'amount']
+    fields = [
+        'name',
+        'amount',
+        'payment_amount',
+        'payment_frequency',
+        'payments_remaining',
+        'interest_rate',
+        'notes',
+    ]
     template_name = 'finance/form.html'
     success_url = reverse_lazy('liability_list')
 
