@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 
 
 class ModelNameMixin:
@@ -11,6 +13,44 @@ class ModelNameMixin:
         return context
 
 from .models import Income, Expense, Asset, Liability
+
+# Dashboard view aggregates all financial information and shows monthly
+# projections based on Income and Expense records.
+class DashboardView(TemplateView):
+    template_name = 'finance/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['income_total'] = (
+            Income.objects.aggregate(total=Sum('amount'))['total'] or 0
+        )
+        context['expense_total'] = (
+            Expense.objects.aggregate(total=Sum('amount'))['total'] or 0
+        )
+        context['asset_total'] = (
+            Asset.objects.aggregate(total=Sum('value'))['total'] or 0
+        )
+        context['liability_total'] = (
+            Liability.objects.aggregate(total=Sum('amount'))['total'] or 0
+        )
+
+        income_months = (
+            Income.objects
+            .annotate(month=TruncMonth('date'))
+            .values('month')
+            .annotate(total=Sum('amount'))
+            .order_by('month')
+        )
+        expense_months = (
+            Expense.objects
+            .annotate(month=TruncMonth('date'))
+            .values('month')
+            .annotate(total=Sum('amount'))
+            .order_by('month')
+        )
+        context['income_by_month'] = income_months
+        context['expense_by_month'] = expense_months
+        return context
 
 # Income views
 class IncomeList(ModelNameMixin, ListView):

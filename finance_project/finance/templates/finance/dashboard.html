@@ -1,0 +1,29 @@
+{% extends 'finance/base.html' %}
+{% block content %}
+<h2>Dashboard</h2>
+<ul>
+    <li>Total Income: {{ income_total }}</li>
+    <li>Total Expense: {{ expense_total }}</li>
+    <li>Total Assets: {{ asset_total }}</li>
+    <li>Total Liabilities: {{ liability_total }}</li>
+</ul>
+<h3>Projections by Month</h3>
+<table border="1">
+    <tr>
+        <th>Month</th>
+        <th>Income</th>
+        <th>Expense</th>
+    </tr>
+    {% for month in income_by_month %}
+    <tr>
+        <td>{{ month.month|date:"Y-m" }}</td>
+        <td>{{ month.total }}</td>
+        <td>
+            {% for e in expense_by_month %}
+                {% if e.month == month.month %}{{ e.total }}{% endif %}
+            {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
