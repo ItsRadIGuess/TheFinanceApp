@@ -25,4 +25,16 @@ urlpatterns = [
     path('liability/add/', views.LiabilityCreate.as_view(), name='liability_add'),
     path('liability/<int:pk>/edit/', views.LiabilityUpdate.as_view(), name='liability_edit'),
     path('liability/<int:pk>/delete/', views.LiabilityDelete.as_view(), name='liability_delete'),
+
+    path('bankaccount/', views.BankAccountList.as_view(), name='bankaccount_list'),
+    path('bankaccount/<int:pk>/', views.BankAccountDetail.as_view(), name='bankaccount_detail'),
+    path('bankaccount/add/', views.BankAccountCreate.as_view(), name='bankaccount_add'),
+    path('bankaccount/<int:pk>/edit/', views.BankAccountUpdate.as_view(), name='bankaccount_edit'),
+    path('bankaccount/<int:pk>/delete/', views.BankAccountDelete.as_view(), name='bankaccount_delete'),
+
+    path('stock/', views.StockList.as_view(), name='stock_list'),
+    path('stock/<int:pk>/', views.StockDetail.as_view(), name='stock_detail'),
+    path('stock/add/', views.StockCreate.as_view(), name='stock_add'),
+    path('stock/<int:pk>/edit/', views.StockUpdate.as_view(), name='stock_edit'),
+    path('stock/<int:pk>/delete/', views.StockDelete.as_view(), name='stock_delete'),
 ]
