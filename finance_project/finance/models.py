@@ -1,12 +1,21 @@
 from django.db import models
 
 class Income(models.Model):
+    """Recurring income entry."""
+
+    FREQUENCY_CHOICES = [
+        ("W", "Weekly"),
+        ("M", "Monthly"),
+        ("Y", "Yearly"),
+    ]
+
+    name = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES)
     description = models.CharField(max_length=255, blank=True)
-    date = models.DateField()
 
     def __str__(self):
-        return f"Income {self.amount} on {self.date}"
+        return f"{self.name} {self.amount} ({self.get_frequency_display()})"
 
 class Expense(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)

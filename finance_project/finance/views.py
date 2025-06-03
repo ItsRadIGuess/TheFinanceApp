@@ -34,22 +34,8 @@ class DashboardView(TemplateView):
             Liability.objects.aggregate(total=Sum('amount'))['total'] or 0
         )
 
-        income_months = (
-            Income.objects
-            .annotate(month=TruncMonth('date'))
-            .values('month')
-            .annotate(total=Sum('amount'))
-            .order_by('month')
-        )
-        expense_months = (
-            Expense.objects
-            .annotate(month=TruncMonth('date'))
-            .values('month')
-            .annotate(total=Sum('amount'))
-            .order_by('month')
-        )
-        context['income_by_month'] = income_months
-        context['expense_by_month'] = expense_months
+        # With Income records now representing recurring payments rather than
+        # dated transactions, monthly breakdowns no longer make sense.
         return context
 
 # Income views
@@ -63,13 +49,13 @@ class IncomeDetail(ModelNameMixin, DetailView):
 
 class IncomeCreate(ModelNameMixin, CreateView):
     model = Income
-    fields = ['amount', 'description', 'date']
+    fields = ['name', 'amount', 'frequency', 'description']
     template_name = 'finance/form.html'
     success_url = reverse_lazy('income_list')
 
 class IncomeUpdate(ModelNameMixin, UpdateView):
     model = Income
-    fields = ['amount', 'description', 'date']
+    fields = ['name', 'amount', 'frequency', 'description']
     template_name = 'finance/form.html'
     success_url = reverse_lazy('income_list')
 
