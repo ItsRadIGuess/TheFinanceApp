@@ -20,3 +20,5 @@ Fully Feature Set Finance Platform for projecting cashflows budgets and other th
    ```
 
 The finance app exposes simple CRUD screens at `/income/`, `/expense/`, `/asset/`, and `/liability/`.
+
+This repository also includes a `.gitignore` file that filters out Python bytecode, the development SQLite database, and common virtual environment directories.
