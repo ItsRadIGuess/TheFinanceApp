@@ -3,9 +3,9 @@ Fully Feature Set Finance Platform for projecting cashflows budgets and other th
 
 ## Setup
 
-1. Install dependencies (Django):
+1. Install dependencies:
    ```bash
-   pip install django
+   pip install -r requirements.txt
    ```
 
 2. Apply migrations:
