@@ -11,7 +11,15 @@ class FinanceModelTests(TestCase):
         Asset.objects.create(name="Car", value=Decimal("10000"))
         BankAccount.objects.create(name="Checking", balance=Decimal("5000"), interest_rate=Decimal("5"))
         Stock.objects.create(name="ACME", shares=10, price=Decimal("20"), dividend_yield=Decimal("2"))
-        Liability.objects.create(name="Loan", amount=Decimal("3000"))
+        Liability.objects.create(
+            name="Loan",
+            amount=Decimal("3000"),
+            payment_amount=Decimal("250"),
+            payment_frequency="month",
+            payments_remaining=12,
+            interest_rate=Decimal("5"),
+            notes="Car loan",
+        )
 
     def test_projected_balance(self):
         acct = BankAccount.objects.get(name="Checking")
