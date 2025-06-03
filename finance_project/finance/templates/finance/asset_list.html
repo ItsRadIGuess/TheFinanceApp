@@ -13,7 +13,7 @@
     <li>No items.</li>
     {% endfor %}
 </ul>
-<a href="{% url 'asset_add' %}">Add new asset</a>
+<a href="{% url 'asset_add' %}" class="button-link">Add new asset</a>
 
 <h3>Bank Accounts</h3>
 <ul>
@@ -25,7 +25,7 @@
     <li>No bank accounts.</li>
     {% endfor %}
 </ul>
-<a href="{% url 'bankaccount_add' %}">Add bank account</a>
+<a href="{% url 'bankaccount_add' %}" class="button-link">Add bank account</a>
 
 <h3>Stocks</h3>
 <ul>
@@ -37,5 +37,5 @@
     <li>No stocks.</li>
     {% endfor %}
 </ul>
-<a href="{% url 'stock_add' %}">Add stock</a>
+<a href="{% url 'stock_add' %}" class="button-link">Add stock</a>
 {% endblock %}
