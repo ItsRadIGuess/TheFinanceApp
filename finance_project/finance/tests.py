@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django.test import TestCase
+from django.urls import reverse
 
 from .models import Asset, BankAccount, Liability, Stock
 from .services import calculate_net_worth, total_dividends
@@ -34,3 +35,17 @@ class FinanceModelTests(TestCase):
         # Assets 10000 + projected bank balance 5250 + stock value 200 - liabilities 3000
         self.assertEqual(networth, Decimal("12450"))
         self.assertEqual(total_dividends(), Decimal("4"))
+
+
+class FinanceViewTests(TestCase):
+    def setUp(self):
+        Asset.objects.create(name="Laptop", value=Decimal("1000"))
+        BankAccount.objects.create(name="Savings", balance=Decimal("1500"), interest_rate=Decimal("2"))
+        Stock.objects.create(name="XYZ", shares=5, price=Decimal("10"), dividend_yield=Decimal("1"))
+
+    def test_asset_list_view(self):
+        response = self.client.get(reverse("asset_list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Laptop")
+        self.assertContains(response, "Savings")
+        self.assertContains(response, "XYZ")

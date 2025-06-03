@@ -6,11 +6,11 @@
 <body>
     <h1>Finance App</h1>
     <nav>
-        <a href="/">Dashboard</a> |
-        <a href="/income/">Income</a> |
-        <a href="/expense/">Expense</a> |
-        <a href="/asset/">Assets</a> |
-        <a href="/liability/">Liability</a>
+        <a href="{% url 'dashboard' %}">Dashboard</a> |
+        <a href="{% url 'income_list' %}">Income</a> |
+        <a href="{% url 'expense_list' %}">Expense</a> |
+        <a href="{% url 'asset_list' %}">Assets</a> |
+        <a href="{% url 'liability_list' %}">Liability</a>
     </nav>
     <hr>
     {% block content %}{% endblock %}
