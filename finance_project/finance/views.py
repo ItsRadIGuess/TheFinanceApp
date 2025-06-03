@@ -107,7 +107,13 @@ class ExpenseDelete(ModelNameMixin, DeleteView):
 # Asset views
 class AssetList(ModelNameMixin, ListView):
     model = Asset
-    template_name = 'finance/list.html'
+    template_name = 'finance/asset_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bankaccount_list'] = BankAccount.objects.all()
+        context['stock_list'] = Stock.objects.all()
+        return context
 
 class AssetDetail(ModelNameMixin, DetailView):
     model = Asset

@@ -1,0 +1,39 @@
+{% extends 'finance/base.html' %}
+{% block content %}
+<h2>Assets</h2>
+<h3>General Assets</h3>
+<ul>
+    {% for obj in object_list %}
+    <li>
+        <a href="{{ obj.pk }}/">{{ obj }}</a> [<a href="{{ obj.pk }}/edit/">edit</a>] [<a href="{{ obj.pk }}/delete/">delete</a>]
+    </li>
+    {% empty %}
+    <li>No items.</li>
+    {% endfor %}
+</ul>
+<a href="add/">Add new asset</a>
+
+<h3>Bank Accounts</h3>
+<ul>
+    {% for acct in bankaccount_list %}
+    <li>
+        <a href="{% url 'bankaccount_detail' acct.pk %}">{{ acct }}</a> [<a href="{% url 'bankaccount_edit' acct.pk %}">edit</a>] [<a href="{% url 'bankaccount_delete' acct.pk %}">delete</a>]
+    </li>
+    {% empty %}
+    <li>No bank accounts.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'bankaccount_add' %}">Add bank account</a>
+
+<h3>Stocks</h3>
+<ul>
+    {% for stock in stock_list %}
+    <li>
+        <a href="{% url 'stock_detail' stock.pk %}">{{ stock }}</a> [<a href="{% url 'stock_edit' stock.pk %}">edit</a>] [<a href="{% url 'stock_delete' stock.pk %}">delete</a>]
+    </li>
+    {% empty %}
+    <li>No stocks.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'stock_add' %}">Add stock</a>
+{% endblock %}
