@@ -4,7 +4,12 @@ from django.test import TestCase
 from django.urls import reverse
 
 from .models import Asset, BankAccount, Liability, Stock
-from .services import calculate_net_worth, total_dividends
+from .services import (
+    calculate_net_worth,
+    total_dividends,
+    total_interest,
+    total_passive_income,
+)
 
 
 class FinanceModelTests(TestCase):
@@ -30,11 +35,17 @@ class FinanceModelTests(TestCase):
         stock = Stock.objects.get(name="ACME")
         self.assertEqual(stock.annual_dividend(), Decimal("4"))
 
+    def test_annual_interest(self):
+        acct = BankAccount.objects.get(name="Checking")
+        self.assertEqual(acct.annual_interest(), Decimal("250"))
+
     def test_calculate_net_worth(self):
         networth = calculate_net_worth()
         # Assets 10000 + projected bank balance 5250 + stock value 200 - liabilities 3000
         self.assertEqual(networth, Decimal("12450"))
         self.assertEqual(total_dividends(), Decimal("4"))
+        self.assertEqual(total_interest(), Decimal("250"))
+        self.assertEqual(total_passive_income(), Decimal("254"))
 
 
 class FinanceViewTests(TestCase):
@@ -49,3 +60,9 @@ class FinanceViewTests(TestCase):
         self.assertContains(response, "Laptop")
         self.assertContains(response, "Savings")
         self.assertContains(response, "XYZ")
+
+    def test_dashboard_view_totals(self):
+        response = self.client.get(reverse("dashboard"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["asset_total"], Decimal("2550"))
+        self.assertEqual(response.context["passive_income_total"], Decimal("30.50"))
