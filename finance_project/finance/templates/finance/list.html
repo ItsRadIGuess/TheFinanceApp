@@ -1,0 +1,15 @@
+{% extends 'finance/base.html' %}
+{% block content %}
+<h2>{{ model_name }} List</h2>
+<ul>
+    {% for obj in object_list %}
+    <li>
+        <a href="{{ obj.pk }}/">{{ obj }}</a>
+        [<a href="{{ obj.pk }}/edit/">edit</a>] [<a href="{{ obj.pk }}/delete/">delete</a>]
+    </li>
+    {% empty %}
+    <li>No items.</li>
+    {% endfor %}
+</ul>
+<a href="add/">Add new</a>
+{% endblock %}
