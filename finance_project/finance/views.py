@@ -13,6 +13,7 @@ class ModelNameMixin:
         return context
 
 from .models import Income, Expense, Asset, Liability, BankAccount, Stock
+from .services import total_passive_income
 
 # Dashboard view aggregates all financial information and shows monthly
 # projections based on Income and Expense records.
@@ -21,15 +22,19 @@ class DashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['income_total'] = (
-            Income.objects.aggregate(total=Sum('amount'))['total'] or 0
-        )
+        passive = total_passive_income()
+        income_base = Income.objects.aggregate(total=Sum('amount'))['total'] or 0
+        context['income_total'] = income_base + passive
+        context['passive_income_total'] = passive
         context['expense_total'] = (
             Expense.objects.aggregate(total=Sum('amount'))['total'] or 0
         )
-        context['asset_total'] = (
-            Asset.objects.aggregate(total=Sum('value'))['total'] or 0
+        asset_sum = Asset.objects.aggregate(total=Sum('value'))['total'] or 0
+        bank_sum = (
+            BankAccount.objects.aggregate(total=Sum('balance'))['total'] or 0
         )
+        stock_sum = sum(s.current_value() for s in Stock.objects.all())
+        context['asset_total'] = asset_sum + bank_sum + stock_sum
         context['liability_total'] = (
             Liability.objects.aggregate(total=Sum('amount'))['total'] or 0
         )

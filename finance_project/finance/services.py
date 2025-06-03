@@ -16,3 +16,13 @@ def total_dividends() -> Decimal:
     """Return total annual dividends from all stocks."""
     return sum(s.annual_dividend() for s in Stock.objects.all())
 
+
+def total_interest() -> Decimal:
+    """Return total annual interest from all bank accounts."""
+    return sum(acct.annual_interest() for acct in BankAccount.objects.all())
+
+
+def total_passive_income() -> Decimal:
+    """Return combined dividends and interest."""
+    return total_dividends() + total_interest()
+

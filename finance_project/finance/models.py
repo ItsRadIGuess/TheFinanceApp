@@ -82,6 +82,10 @@ class BankAccount(models.Model):
         rate = self.interest_rate / 100
         return self.balance * (1 + rate) ** years
 
+    def annual_interest(self):
+        """Return interest earned in one year."""
+        return self.balance * (self.interest_rate / 100)
+
     def __str__(self):
         return self.name
 
